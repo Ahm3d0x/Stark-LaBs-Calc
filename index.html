@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stark LaBs - حاسبة التكلفة الشاملة</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter for Latin, Tajawal for Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Tajawal', 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1f2937; }
+        ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+        select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: left 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem; 
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white antialiased">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl">
+
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <div class="inline-block bg-gray-800 p-4 rounded-full shadow-lg">
+                <svg class="w-16 h-16 text-amber-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L8 4V10L12 12L16 10V4L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12L16 14V20L12 22L8 20V14L4 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 12L8 10V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12L16 10V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h1 class="text-4xl font-bold mt-4 text-white">Stark LaBs</h1>
+            <p class="text-indigo-400 text-lg mt-1">حاسبة التكاليف الشاملة للطباعة ثلاثية الأبعاد</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+
+            <!-- Input Form -->
+            <div class="lg:col-span-3 bg-gray-800 p-6 rounded-2xl shadow-2xl space-y-6">
+                
+                <!-- Section 1: Material -->
+                <fieldset class="border-2 border-gray-700 rounded-lg p-4">
+                    <legend class="px-2 text-lg font-semibold text-amber-400">1. تكلفة المواد</legend>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                        <div>
+                            <label for="materialType" class="block text-sm font-medium text-gray-300 mb-1">نوع المادة الخام</label>
+                            <select id="materialType" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                                <option value="PLA">PLA</option><option value="PETG">PETG</option><option value="ABS">ABS</option><option value="TPU">TPU</option><option value="CUSTOM">مخصص</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="modelWeight" class="block text-sm font-medium text-gray-300 mb-1">وزن النموذج (جرام)</label>
+                            <input type="number" id="modelWeight" value="0" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                        </div>
+                        <div>
+                            <label for="spoolWeight" class="block text-sm font-medium text-gray-300 mb-1">وزن البكرة (جرام)</label>
+                            <input type="number" id="spoolWeight" value="1000" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                        </div>
+                        <div>
+                            <label for="spoolPrice" class="block text-sm font-medium text-gray-300 mb-1">سعر البكرة (ج.م)</label>
+                            <input type="number" id="spoolPrice" value="900" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Section 2: Machine & Time -->
+                <fieldset class="border-2 border-gray-700 rounded-lg p-4">
+                    <legend class="px-2 text-lg font-semibold text-amber-400">2. تكلفة التشغيل والوقت</legend>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                        <div>
+                            <label for="printTime" class="block text-sm font-medium text-gray-300 mb-1">زمن الطباعة (ساعة)</label>
+                            <input type="number" step="0.1" id="printTime" value="0" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition" title="يمكنك استخدام الكسور العشرية مثل 2.5 للساعتين والنصف">
+                        </div>
+                        <div>
+                            <label for="printerPower" class="block text-sm font-medium text-gray-300 mb-1">استهلاك الطابعة (واط)</label>
+                            <input type="number" id="printerPower" value="300" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                        </div>
+                        <div>
+                            <label for="electricityPrice" class="block text-sm font-medium text-gray-300 mb-1">سعر الكهرباء (ج.م/kWh)</label>
+                            <input type="number" step="0.01" id="electricityPrice" value="1.60" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Section 3: Labor & Other Costs -->
+                <fieldset class="border-2 border-gray-700 rounded-lg p-4">
+                    <legend class="px-2 text-lg font-semibold text-amber-400">3. التكاليف الإضافية</legend>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                        <div>
+                           <label for="laborTime" class="block text-sm font-medium text-gray-300 mb-1">وقت العمل اليدوي (ساعة)</label>
+                           <input type="number" step="0.1" id="laborTime" value="0.5" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition" title="وقت الإعداد والمعالجة اللاحقة">
+                        </div>
+                        <div>
+                           <label for="hourlyRate" class="block text-sm font-medium text-gray-300 mb-1">تكلفة ساعة العمل (ج.م)</label>
+                           <input type="number" id="hourlyRate" value="20" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                        </div>
+                        <div>
+                           <label for="designCost" class="block text-sm font-medium text-gray-300 mb-1">تكلفة تصميم النموذج (ج.م)</label>
+                           <input type="number" id="designCost" value="0" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                        </div>
+                         <div>
+                            <label for="maintenanceCost" class="block text-sm font-medium text-gray-300 mb-1">صيانة وإهلاك (ج.م/ساعة)</label>
+                            <input type="number" step="0.1" id="maintenanceCost" value="3.0" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                        </div>
+                        <div>
+                            <label for="failurePercentage" class="block text-sm font-medium text-gray-300 mb-1">احتمال الفشل (%)</label>
+                            <input type="number" id="failurePercentage" value="5" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                        </div>
+                         <div>
+                            <label for="shippingCost" class="block text-sm font-medium text-gray-300 mb-1">تكلفة الشحن (ج.م)</label>
+                            <input type="number" id="shippingCost" value="0" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Section 4: Profit -->
+                 <fieldset class="border-2 border-gray-700 rounded-lg p-4">
+                    <legend class="px-2 text-lg font-semibold text-amber-400">4. الأرباح والمصاريف النهائية</legend>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                        <div>
+                            <label for="overheadPercentage" class="block text-sm font-medium text-gray-300 mb-1">مصاريف إدارية وتسويق (%)</label>
+                            <input type="number" id="overheadPercentage" value="10" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                        </div>
+                        <div>
+                            <label for="profitMargin" class="block text-sm font-medium text-gray-300 mb-1">هامش الربح (%)</label>
+                            <input type="number" id="profitMargin" value="30" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition">
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- Cost Summary -->
+            <div class="lg:col-span-2 bg-indigo-900/50 backdrop-blur-sm border-2 border-indigo-700 p-6 rounded-2xl shadow-2xl h-fit sticky top-8">
+                <h2 class="text-2xl font-bold text-center mb-6 text-white">ملخص التكلفة</h2>
+                
+                <div class="space-y-3 text-lg">
+                    <div class="flex justify-between items-center"><span class="text-gray-300">تكلفة المادة الخام</span><span class="font-bold text-amber-400"><span id="materialCostResult">0.00</span> ج.م</span></div>
+                    <div class="flex justify-between items-center"><span class="text-gray-300">تكلفة الطاقة</span><span class="font-bold text-amber-400"><span id="energyCostResult">0.00</span> ج.م</span></div>
+                    <div class="flex justify-between items-center"><span class="text-gray-300">تكلفة الصيانة والإهلاك</span><span class="font-bold text-amber-400"><span id="maintenanceResult">0.00</span> ج.م</span></div>
+                    <div class="flex justify-between items-center"><span class="text-gray-300">تكلفة العمل اليدوي</span><span class="font-bold text-amber-400"><span id="laborCostResult">0.00</span> ج.م</span></div>
+                    <div class="flex justify-between items-center"><span class="text-gray-300">تكلفة التصميم</span><span class="font-bold text-amber-400"><span id="designCostResult">0.00</span> ج.م</span></div>
+                    <div class="flex justify-between items-center"><span class="text-gray-300">تكلفة الفشل المحتمل</span><span class="font-bold text-amber-400"><span id="failureCostResult">0.00</span> ج.م</span></div>
+                    
+                    <hr class="border-indigo-600 my-3">
+                    
+                    <div class="flex justify-between items-center font-semibold"><span class="text-gray-200">إجمالي تكاليف الإنتاج</span><span class="font-bold text-white"><span id="productionCostResult">0.00</span> ج.م</span></div>
+                    <div class="flex justify-between items-center font-semibold"><span class="text-gray-200">مصاريف إدارية وتسويق</span><span class="font-bold text-white"><span id="overheadResult">0.00</span> ج.م</span></div>
+                    <div class="flex justify-between items-center font-semibold"><span class="text-gray-200">التكلفة الإجمالية (قبل الربح)</span><span class="font-bold text-xl text-white"><span id="subtotalResult">0.00</span> ج.م</span></div>
+                    <div class="flex justify-between items-center font-semibold"><span class="text-gray-200">قيمة الربح</span><span class="font-bold text-xl text-white"><span id="profitResult">0.00</span> ج.م</span></div>
+                    <div class="flex justify-between items-center font-semibold"><span class="text-gray-200">تكلفة الشحن</span><span class="font-bold text-xl text-white"><span id="shippingResult">0.00</span> ج.م</span></div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg mt-6 text-center">
+                        <p class="text-lg text-amber-400">السعر النهائي المقترح للعميل</p>
+                        <p class="text-4xl lg:text-5xl font-extrabold text-white mt-2 tracking-tight">
+                            <span id="finalPriceResult">0.00</span>
+                            <span class="text-2xl font-semibold">ج.م</span>
+                        </p>
+                    </div>
+                </div>
+                 <button id="resetBtn" class="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-lg">إعادة تعيين</button>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        // --- Data and DOM Elements ---
+        const materialData = { 'PLA': { price: 900 }, 'PETG': { price: 2500 }, 'ABS': { price: 1500 }, 'TPU': { price: 1800 }, 'CUSTOM': { price: 0 } };
+        const inputs = document.querySelectorAll('input, select');
+        const materialTypeEl = document.getElementById('materialType');
+        const spoolPriceEl = document.getElementById('spoolPrice');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // --- Main Calculation Function ---
+        function calculateCosts() {
+            const getValue = id => parseFloat(document.getElementById(id).value) || 0;
+
+            // Read all input values
+            const modelWeight = getValue('modelWeight');
+            const spoolWeight = getValue('spoolWeight') || 1;
+            const spoolPrice = getValue('spoolPrice');
+            const totalPrintTimeHours = getValue('printTime');
+            const printerPower = getValue('printerPower');
+            const electricityPrice = getValue('electricityPrice');
+            const maintenanceCostPerHour = getValue('maintenanceCost');
+            const laborTime = getValue('laborTime');
+            const hourlyRate = getValue('hourlyRate');
+            const designCost = getValue('designCost');
+            const failurePercentage = getValue('failurePercentage');
+            const shippingCost = getValue('shippingCost');
+            const overheadPercentage = getValue('overheadPercentage');
+            const profitMargin = getValue('profitMargin');
+
+            // --- Perform Calculations ---
+            // 1. Core Production Costs
+            const materialCost = (modelWeight / spoolWeight) * spoolPrice;
+            const energyCost = (printerPower * totalPrintTimeHours / 1000) * electricityPrice;
+            const maintenanceCost = totalPrintTimeHours * maintenanceCostPerHour;
+            const laborCost = laborTime * hourlyRate;
+
+            // 2. Cost buffer for failures
+            const directPrintCosts = materialCost + energyCost + maintenanceCost;
+            const failureCost = directPrintCosts * (failurePercentage / 100);
+
+            // 3. Total Production Cost
+            const totalProductionCost = directPrintCosts + laborCost + designCost + failureCost;
+
+            // 4. Overheads (Marketing, Admin)
+            const overheadCost = totalProductionCost * (overheadPercentage / 100);
+
+            // 5. Subtotal (Total cost before profit)
+            const subtotal = totalProductionCost + overheadCost;
+
+            // 6. Profit Amount
+            const profitAmount = subtotal * (profitMargin / 100);
+
+            // 7. Final Price (including shipping)
+            const finalPrice = subtotal + profitAmount + shippingCost;
+
+            // --- Update UI ---
+            const setResult = (id, value) => { document.getElementById(id).textContent = value.toFixed(2); };
+            setResult('materialCostResult', materialCost);
+            setResult('energyCostResult', energyCost);
+            setResult('maintenanceResult', maintenanceCost);
+            setResult('laborCostResult', laborCost);
+            setResult('designCostResult', designCost);
+            setResult('failureCostResult', failureCost);
+            setResult('productionCostResult', totalProductionCost);
+            setResult('overheadResult', overheadCost);
+            setResult('subtotalResult', subtotal);
+            setResult('profitResult', profitAmount);
+            setResult('shippingResult', shippingCost);
+            setResult('finalPriceResult', finalPrice);
+        }
+
+        // --- Event Handlers ---
+        function handleMaterialChange() {
+            const selectedMaterial = materialTypeEl.value;
+            if (selectedMaterial !== 'CUSTOM') {
+                spoolPriceEl.value = materialData[selectedMaterial].price;
+            }
+            calculateCosts();
+        }
+
+        function resetForm() {
+            document.getElementById('modelWeight').value = '0';
+            document.getElementById('materialType').value = 'PLA';
+            document.getElementById('spoolWeight').value = '1000';
+            document.getElementById('printTime').value = '0';
+            document.getElementById('printerPower').value = '300';
+            document.getElementById('electricityPrice').value = '1.60';
+            document.getElementById('maintenanceCost').value = '3.0';
+            document.getElementById('laborTime').value = '0.5';
+            document.getElementById('hourlyRate').value = '20';
+            document.getElementById('designCost').value = '0';
+            document.getElementById('failurePercentage').value = '5';
+            document.getElementById('shippingCost').value = '0';
+            document.getElementById('overheadPercentage').value = '10';
+            document.getElementById('profitMargin').value = '30';
+            handleMaterialChange();
+        }
+
+        // --- Attach Event Listeners ---
+        inputs.forEach(input => input.addEventListener('input', calculateCosts));
+        materialTypeEl.addEventListener('change', handleMaterialChange);
+        resetBtn.addEventListener('click', resetForm);
+        window.addEventListener('load', handleMaterialChange);
+    </script>
+</body>
+</html>
